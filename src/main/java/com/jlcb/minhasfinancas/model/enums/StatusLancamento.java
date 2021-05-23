@@ -1,4 +1,4 @@
-package com.jlcb.minhasfinancas.model.enuns;
+package com.jlcb.minhasfinancas.model.enums;
 
 public enum StatusLancamento {
 	

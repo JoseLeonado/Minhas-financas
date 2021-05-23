@@ -17,8 +17,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
-import com.jlcb.minhasfinancas.model.enuns.StatusLancamento;
-import com.jlcb.minhasfinancas.model.enuns.TipoLancamento;
+import com.jlcb.minhasfinancas.model.enums.StatusLancamento;
+import com.jlcb.minhasfinancas.model.enums.TipoLancamento;
 
 import lombok.Data;
 
@@ -49,7 +49,7 @@ public class Lancamento {
 	private TipoLancamento tipo;
 
 	@Column(name = "status")
-	@Enumerated(EnumType.STRING) /* Diz que vamos guardar o nome que está no enum (RECEITA ou DESPESA) */
+	@Enumerated(EnumType.STRING) /* Diz que vamos guardar o nome que está no enum (PENDENTE, CANCELADO ou EFETIVADO) */
 	private StatusLancamento status;
 
 	@ManyToOne
