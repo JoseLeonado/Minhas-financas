@@ -26,10 +26,23 @@ public class UsuarioRepositoryTest {
 		Usuario usuario = Usuario.builder().nome("Usuário").email("usuario@email.com").build();
 		usuarioRepository.save(usuario);
 		
-		/* Ação/Execução */
+		/* Ação */
 		boolean resultado = usuarioRepository.existsByEmail("usuario@email.com");
 		
 		/* Verificação */
 		Assertions.assertThat(resultado).isTrue();
+	}
+	
+	@Test
+	public void deveRetornarFasloQuandoNaoHouverUsuarioComOEmail() {
+		
+		/* Cenário */
+		usuarioRepository.deleteAll();
+		
+		/* Ação */
+		boolean resultado = usuarioRepository.existsByEmail("usuario@email.com");
+		
+		/* Verificação */
+		Assertions.assertThat(resultado).isFalse();
 	}
 }

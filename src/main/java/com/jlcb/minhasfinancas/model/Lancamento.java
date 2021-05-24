@@ -20,13 +20,17 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import com.jlcb.minhasfinancas.model.enums.StatusLancamento;
 import com.jlcb.minhasfinancas.model.enums.TipoLancamento;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "lancamento", schema = "financas")
 @Builder
 @Data
+@NoArgsConstructor /* Cria um construtor padrão */
+@AllArgsConstructor /* Cria um constutor com todas propriedades da classe */
 public class Lancamento {
 
 	@Id
