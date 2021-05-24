@@ -20,10 +20,12 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import com.jlcb.minhasfinancas.model.enums.StatusLancamento;
 import com.jlcb.minhasfinancas.model.enums.TipoLancamento;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "lancamento", schema = "financas")
+@Builder
 @Data
 public class Lancamento {
 
