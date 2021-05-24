@@ -1,11 +1,14 @@
 package com.jlcb.minhasfinancas.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlcb.minhasfinancas.exception.RegraNegocioException;
+import com.jlcb.minhasfinancas.exception.AutenticacaoException;
+import com.jlcb.minhasfinancas.exception.EmailException;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.model.repository.UsuarioRepository;
 import com.jlcb.minhasfinancas.service.interfaces.UsuarioServiceInterface;
@@ -23,7 +26,18 @@ public class UsuarioService implements UsuarioServiceInterface {
 
 	@Override
 	public Usuario autenticar(String email, String senha) {
-		return null;
+		
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+		
+		if (!usuario.isPresent()) {
+			throw new AutenticacaoException("Usuário não encontrado para o e-mail informado.");
+		}
+		
+		if (!usuario.get().getSenha().equals(senha)) {
+			throw new AutenticacaoException("Senha inválida.");
+		}
+		
+		return usuario.get();
 	}
 
 	@Override
@@ -41,7 +55,7 @@ public class UsuarioService implements UsuarioServiceInterface {
 		boolean existe = usuarioRepository.existsByEmail(email);
 		
 		if (existe) {
-			throw new RegraNegocioException("Já existe um usário com este e-mail!");
+			throw new EmailException("Já existe um usário com este e-mail.");
 		}
 		
 	}

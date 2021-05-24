@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.jlcb.minhasfinancas.exception.RegraNegocioException;
+import com.jlcb.minhasfinancas.exception.EmailException;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.model.repository.UsuarioRepository;
 import com.jlcb.minhasfinancas.service.interfaces.UsuarioServiceInterface;
@@ -39,7 +39,7 @@ public class UsuarioServiceTest {
 	@Test
 	public void deveLancarErroAoValidarEmailQuandoExistirEmailCadastrado() {
 
-		Assertions.assertThrows(RegraNegocioException.class, () -> {
+		Assertions.assertThrows(EmailException.class, () -> {
 			/* Cenário */
 			Usuario usuario = Usuario.builder().nome("Usuário").email("email@email.com").build();
 			usuarioRepository.save(usuario);
