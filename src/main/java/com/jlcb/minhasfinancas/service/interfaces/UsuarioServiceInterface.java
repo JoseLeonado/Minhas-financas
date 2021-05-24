@@ -2,7 +2,7 @@ package com.jlcb.minhasfinancas.service.interfaces;
 
 import com.jlcb.minhasfinancas.model.Usuario;
 
-public interface UsuarioInterface {
+public interface UsuarioServiceInterface {
 	
 	Usuario autenticar(String email, String senha);
 	

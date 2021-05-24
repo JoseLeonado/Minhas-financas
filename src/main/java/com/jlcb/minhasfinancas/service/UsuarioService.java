@@ -1,15 +1,17 @@
 package com.jlcb.minhasfinancas.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlcb.minhasfinancas.exception.RegraNegocioException;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.model.repository.UsuarioRepository;
-import com.jlcb.minhasfinancas.service.interfaces.UsuarioInterface;
+import com.jlcb.minhasfinancas.service.interfaces.UsuarioServiceInterface;
 
 @Service
-public class UsuarioService implements UsuarioInterface {
+public class UsuarioService implements UsuarioServiceInterface {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -25,8 +27,12 @@ public class UsuarioService implements UsuarioInterface {
 	}
 
 	@Override
+	@Transactional
 	public Usuario salvarUsuario(Usuario usuario) {
-		return null;
+		
+		validarEmail(usuario.getEmail());
+		
+		return usuarioRepository.save(usuario);
 	}
 
 	@Override
