@@ -1,5 +1,7 @@
 package com.jlcb.minhasfinancas.repository;
 
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,10 +30,10 @@ public class UsuarioRepositoryTest {
 	TestEntityManager entityManager;
 
 	@Test
-	public void deveVerificarAExistenciaDeUmEmail() {
+	public void deverRetornarVerdadeiroAoVerificarSeUmEmailExiste() {
 		
 		/* Cenário */
-		Usuario usuario = Usuario.builder().nome("Usuário").email("usuario@email.com").build();
+		Usuario usuario = criarUsuario();
 		entityManager.persist(usuario);
 		
 		/* Ação */
@@ -42,7 +44,7 @@ public class UsuarioRepositoryTest {
 	}
 	
 	@Test
-	public void deveRetornarFasloQuandoNaoHouverUsuarioComOEmail() {
+	public void deverRetornarFalsoAoVerificarSeUmEmailExiste() {
 		
 		/* Cenário */
 		
@@ -51,5 +53,53 @@ public class UsuarioRepositoryTest {
 		
 		/* Verificação */
 		Assertions.assertThat(resultado).isFalse();
+	}
+	
+	@Test
+	public void deveSalvarUmUsuarioNoBancoDeDados() {
+		
+		/* Cenário */
+		Usuario usuario = criarUsuario();
+		
+		/* Açaõ */
+		Usuario usarioSalvo = usuarioRepository.save(usuario);
+		
+		/* Verificação */
+		Assertions.assertThat(usarioSalvo.getId()).isNotNull(); /* Verifique se o usuário salvo possui id, ou seja, se o usuário foi salvo no banco ele terá um id */
+	}
+	
+	@Test
+	public void deveRetornarVerdadeiroAoBuscarUmUsuarioPorUmEmail() {
+		
+		/* Cenário */
+		Usuario usuario = criarUsuario();
+		entityManager.persist(usuario);
+		
+		/* Açaõ */
+		Optional<Usuario> resultado = usuarioRepository.findByEmail("usuario@email.com");
+		
+		/* Verificação */
+		Assertions.assertThat(resultado.isPresent()).isTrue(); /* Verifica se o resultado está presente  */
+	}
+	
+	@Test
+	public void deveRetornarFalsoAoBuscarUmUsuarioPorUmEmail() {
+		
+		/* Cenário */
+
+		
+		/* Açaõ */
+		Optional<Usuario> resultado = usuarioRepository.findByEmail("usuario@email.com");
+		
+		/* Verificação */
+		Assertions.assertThat(resultado.isPresent()).isFalse(); /* Verifica se o resultado está presente  */
+	}
+	
+	public static Usuario criarUsuario() {
+		return 	Usuario.builder()
+				.nome("Usuário")
+				.email("usuario@email.com")
+				.senha("senha")
+				.build();
 	}
 }
