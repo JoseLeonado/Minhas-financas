@@ -41,7 +41,6 @@ public class UsuarioResource {
 			Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
 			
 			return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED); /* quando precisar retornar algo no corpo usar new ResponseEntity<>(corpo da resposta, status retornado); */
-			
 		} catch (EmailException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -55,7 +54,6 @@ public class UsuarioResource {
 			Usuario usuarioAutenticado = usuarioService.autenticar(autenticacaoUsuarioDTO.getEmail(), autenticacaoUsuarioDTO.getSenha());
 			
 			return ResponseEntity.ok(usuarioAutenticado); /* Retorna o status 200 */
-					
 		} catch (AutenticacaoException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

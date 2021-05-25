@@ -5,6 +5,9 @@ import java.util.Objects;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import com.jlcb.minhasfinancas.model.Lancamento;
@@ -46,9 +49,18 @@ public class LancamentoService implements LancamentoServiceInterface {
 	}
 
 	@Override
+	@Transactional
 	public List<Lancamento> buscar(Lancamento lancamentoFiltros) {
-		// TODO Auto-generated method stub
-		return null;
+
+		/*
+		 * Essa é uma api que realiza consultas com filtros passados no parâmetro de forma automática
+		 */
+		Example<Lancamento> example = Example.of(lancamentoFiltros, 
+				ExampleMatcher.matching()
+				.withIgnoreCase() /* Realiza a busca ignorando as letras maiúsculas e ,inúsculas  */
+				.withStringMatcher(StringMatcher.CONTAINING /* Realiza a busca através da String digitada pelo usuário, onde irá trazer o resultado mesmo digitando somente uma letra da palavra */)); 
+		
+		return lancamentoRepository.findAll(example);
 	}
 
 	@Override
