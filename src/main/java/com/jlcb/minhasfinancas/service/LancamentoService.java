@@ -29,6 +29,9 @@ public class LancamentoService implements LancamentoServiceInterface {
 	@Override
 	@Transactional
 	public Lancamento salvar(@Valid Lancamento lancamento) {
+		
+		lancamento.setStatus(StatusLancamento.PENDENTE); /* Todo lançamento novo terá o status de PENDENTE */
+		
 		return lancamentoRepository.save(lancamento);
 	}
 
