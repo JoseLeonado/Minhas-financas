@@ -2,12 +2,11 @@ package com.jlcb.minhasfinancas.api.dto;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 
 import lombok.Builder;
 import lombok.Data;
@@ -31,19 +30,18 @@ public class LancamentoDTO {
 	private Integer mes;
 
 	@NotNull(message = "Informe um ano")
-	@Length(message = "O ano informado está no formato inváldio")
+	@Digits(integer = 4, fraction = 0, message = "O ano informado está no formato inváldio")
 	private Integer ano;
 
-	@NotBlank(message = "Informe um valor")
+	@NotNull(message = "Informe um valor")
 	@Min(value = 1, message = "O valor deve ser maior que 1")
 	private BigDecimal valor;
 
 	@NotBlank(message = "Informe o tipo do lançamento")
 	private String tipo;
 
-	@NotBlank(message = "Informe o status do lançamento")
 	private String status;
 
-	@NotBlank(message = "Infome um usuário")
+	@NotNull(message = "Infome um usuário")
 	private Long usuario;
 }

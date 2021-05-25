@@ -113,10 +113,16 @@ public class LancamentoResource {
 		lancamento.setMes(lancamentoDTO.getMes());
 		lancamento.setAno(lancamentoDTO.getAno());
 		lancamento.setValor(lancamentoDTO.getValor());
-		lancamento.setTipo(TipoLancamento.valueOf(lancamentoDTO.getTipo()));
-		lancamento.setStatus(StatusLancamento.valueOf(lancamentoDTO.getStatus()));
 		
-		Usuario usuario = usuarioService.obterUsuarioPorId(lancamentoDTO.getId()).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado para o id informado"));
+		if (lancamentoDTO.getTipo() != null) {
+			lancamento.setTipo(TipoLancamento.valueOf(lancamentoDTO.getTipo()));
+		}
+		
+		if (lancamentoDTO.getStatus() != null) {
+			lancamento.setStatus(StatusLancamento.valueOf(lancamentoDTO.getStatus()));
+		}
+		
+		Usuario usuario = usuarioService.obterUsuarioPorId(lancamentoDTO.getUsuario()).orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado para o id informado"));
 		lancamento.setUsuario(usuario);
 		
 		return lancamento;
