@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,7 +49,7 @@ public class LancamentoResource {
 	@PutMapping("{id}") /* Editar */
 	public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @Valid @RequestBody LancamentoDTO lancamentoDTO) {
 		
-		return	lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> {
+		return	lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { /* Caso encontre um lançamento pelo id, então iremos atualiza o mesmo */
 			
 			try {
 				
@@ -60,7 +61,17 @@ public class LancamentoResource {
 			} catch (RegraDeNegocioException e) {
 				return ResponseEntity.badRequest().body(e.getMessage());
 			}
-		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST)); /* Caso não encontre o lançamento pelo id passado */
+		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST)); /* Lançar uma exceção caso não encontre o lançamento pelo id passado */
+	}
+	
+	@DeleteMapping("{id}")
+	public ResponseEntity<?> deletar (@PathVariable("id") Long id) {
+
+		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { /* Caso encontre um lançamento pelo id, então iremos deletar o mesmo */
+			
+			lancamentoService.deletar(lancamentoEncontrado);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST));
 	}
 	
 	private Lancamento converterDtoParaLancamento(LancamentoDTO lancamentoDTO) {
