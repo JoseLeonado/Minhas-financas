@@ -1,16 +1,21 @@
 package com.jlcb.minhasfinancas.api.resource;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jlcb.minhasfinancas.api.dto.LancamentoDTO;
@@ -31,6 +36,33 @@ public class LancamentoResource {
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@GetMapping
+	public ResponseEntity<?> buscar(
+			@RequestParam(value = "descricao", required = false) String descricao,
+			@RequestParam(value = "mes", required = false) Integer mes,
+			@RequestParam(value =  "ano", required = false) Integer ano,
+			@RequestParam("usuario") Long idUsuario
+			) {
+		
+		Lancamento lancamentoFiltros = new Lancamento();
+		lancamentoFiltros.setDescricao(descricao);
+		lancamentoFiltros.setMes(mes);
+		lancamentoFiltros.setAno(ano);
+		
+		Optional<Usuario> usuario = usuarioService.obterUsuarioPorId(idUsuario); /* Pode ou não retornar um usuário */
+		
+		if (!usuario.isPresent()) {
+			return ResponseEntity.badRequest().body("Não foi possível realizar a consulta. Usuário não encontrado para o id informado");
+		} else {
+			lancamentoFiltros.setUsuario(usuario.get());
+		}
+		
+		List<Lancamento> lancamentosEncontradoNaBuscaPelosFiltros = lancamentoService.buscar(lancamentoFiltros);
+		
+		return ResponseEntity.ok(lancamentosEncontradoNaBuscaPelosFiltros);
+		
+	}
 	
 	@PostMapping
 	public ResponseEntity<?> salvar(@Valid @RequestBody LancamentoDTO lancamentoDTO) {
