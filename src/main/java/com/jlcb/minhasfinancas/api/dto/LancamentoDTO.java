@@ -24,6 +24,8 @@ import lombok.Setter;
 @Data
 public class LancamentoDTO {
 	
+	private Long id;
+	
 	@NotBlank(message = "Informe uma descrição")
 	private String descricao;
 
@@ -47,5 +49,5 @@ public class LancamentoDTO {
 	private StatusLancamento status;
 
 	@NotBlank(message = "Infome um usuário")
-	private Usuario usuario;
+	private Long usuario;
 }
