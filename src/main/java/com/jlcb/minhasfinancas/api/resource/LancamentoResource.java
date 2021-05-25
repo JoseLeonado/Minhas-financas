@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlcb.minhasfinancas.api.dto.AtualizaStatusLancamentoDTO;
 import com.jlcb.minhasfinancas.api.dto.LancamentoDTO;
 import com.jlcb.minhasfinancas.model.Lancamento;
 import com.jlcb.minhasfinancas.model.Usuario;
@@ -95,8 +96,40 @@ public class LancamentoResource {
 		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST)); /* Lançar uma exceção caso não encontre o lançamento pelo id passado */
 	}
 	
+	@PutMapping("{id}/atuliza-status")
+	public ResponseEntity<?> atualizarStatus(@PathVariable("id") Long id, @RequestBody AtualizaStatusLancamentoDTO atualizaStatusLancamentoDTO) {
+		
+		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> {
+			
+			StatusLancamento statusSelecionado = StatusLancamento.valueOf(atualizaStatusLancamentoDTO.getStatus());
+			
+			if (statusSelecionado == null) {
+				return ResponseEntity.badRequest().body("Não foi possível atualizar o status do lançamento, envie um status válido");
+			}
+			
+			try {
+				
+				lancamentoEncontrado.setStatus(statusSelecionado);
+				
+				lancamentoService.atualizar(lancamentoEncontrado);
+				
+				return ResponseEntity.ok(lancamentoEncontrado);	
+			} catch (RegraDeNegocioException e) {
+				return ResponseEntity.badRequest().body(e.getMessage());
+			}		
+		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST));
+	}
+	
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deletar (@PathVariable("id") Long id) {
+		
+		
+//		if (lancamentoEncontrado.isPresent()) {
+//			lancamentoService.deletar(lancamentoEncontrado);
+//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		} else {
+//			return new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST);
+//		}
 
 		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { /* Caso encontre um lançamento pelo id, então iremos deletar o mesmo */
 			
