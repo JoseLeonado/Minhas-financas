@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @Data
-public class UsuarioDTO {
+public class CadastroUsuarioDTO {
 
 	private String nome;
 	private String email;

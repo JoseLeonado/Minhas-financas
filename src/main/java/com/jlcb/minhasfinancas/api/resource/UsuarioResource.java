@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jlcb.minhasfinancas.api.dto.UsuarioDTO;
+import com.jlcb.minhasfinancas.api.dto.AutenticacaoUsuarioDTO;
+import com.jlcb.minhasfinancas.api.dto.CadastroUsuarioDTO;
+import com.jlcb.minhasfinancas.exception.AutenticacaoException;
 import com.jlcb.minhasfinancas.exception.EmailException;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.service.UsuarioService;
@@ -30,17 +32,31 @@ public class UsuarioResource {
 	 * @RequestBody = Ela diz para que o JSON que vem da requisição sejam transformado no objeto DTO com as propriedades da mesma
 	 */
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody UsuarioDTO usuarioDTO) { 
+	public ResponseEntity<?> salvar(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO) { 
 		
-		Usuario usuario = new Usuario(null, usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getSenha());
+		Usuario usuario = new Usuario(null, cadastroUsuarioDTO.getNome(), cadastroUsuarioDTO.getEmail(), cadastroUsuarioDTO.getSenha());
 		
 		try {
 			
 			Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
 			
-			return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
+			return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED); /* quando precisar retornar algo no corpo usar new ResponseEntity<>(corpo da resposta, status retornado); */
 			
 		} catch (EmailException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PostMapping()
+	public ResponseEntity<?> autenticar(@RequestBody AutenticacaoUsuarioDTO autenticacaoUsuarioDTO) {
+		
+		try {
+			
+			Usuario usuarioAutenticado = usuarioService.autenticar(autenticacaoUsuarioDTO.getEmail(), autenticacaoUsuarioDTO.getSenha());
+			
+			return ResponseEntity.ok(usuarioAutenticado); /* Retorna o status 200 */
+					
+		} catch (AutenticacaoException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
