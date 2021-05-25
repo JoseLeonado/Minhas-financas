@@ -52,9 +52,9 @@ public class UsuarioService implements UsuarioServiceInterface {
 	@Override
 	public void validarEmail(String email) {
 
-		boolean existe = usuarioRepository.existsByEmail(email);
+		boolean emailExiste = usuarioRepository.existsByEmail(email);
 		
-		if (existe) {
+		if (emailExiste) {
 			throw new EmailException("Já existe um usário com este e-mail.");
 		}
 		
