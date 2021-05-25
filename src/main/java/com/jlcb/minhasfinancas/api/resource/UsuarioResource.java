@@ -47,7 +47,7 @@ public class UsuarioResource {
 		}
 	}
 	
-	@PostMapping()
+	@PostMapping("/autenticar")
 	public ResponseEntity<?> autenticar(@RequestBody AutenticacaoUsuarioDTO autenticacaoUsuarioDTO) {
 		
 		try {
