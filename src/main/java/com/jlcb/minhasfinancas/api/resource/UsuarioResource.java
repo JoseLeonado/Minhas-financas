@@ -2,6 +2,7 @@ package com.jlcb.minhasfinancas.api.resource;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,16 +20,9 @@ import com.jlcb.minhasfinancas.service.impl.UsuarioServiceImpl;
 @RequestMapping("/usuarios")
 public class UsuarioResource {
 	
+	@Autowired
 	private UsuarioServiceImpl usuarioService;
-	
-	/*
-	 * Contrutor para injeção de dependência
-	 * 
-	 */
-	public UsuarioResource(UsuarioServiceImpl usuarioService) {
-		this.usuarioService = usuarioService;
-	}
-	
+		
 	/*
 	 * @RequestBody = Ela diz para que o JSON que vem da requisição sejam transformado no objeto DTO com as propriedades da mesma
 	 */

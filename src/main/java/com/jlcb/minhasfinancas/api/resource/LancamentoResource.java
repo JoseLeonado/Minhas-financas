@@ -61,7 +61,6 @@ public class LancamentoResource {
 		List<Lancamento> lancamentosEncontradoNaBuscaPelosFiltros = lancamentoService.buscar(lancamentoFiltros);
 		
 		return ResponseEntity.ok(lancamentosEncontradoNaBuscaPelosFiltros);
-		
 	}
 	
 	@PostMapping

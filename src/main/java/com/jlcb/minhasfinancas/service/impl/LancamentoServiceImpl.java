@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
@@ -20,12 +21,8 @@ import com.jlcb.minhasfinancas.service.LancamentoService;
 @Service
 public class LancamentoServiceImpl implements LancamentoService {
 	
+	@Autowired
 	private LancamentoRepository lancamentoRepository;
-	
-	/* "Injetando" a dependência */
-	public LancamentoServiceImpl(LancamentoRepository lancamentoRepository) {
-		this.lancamentoRepository = lancamentoRepository;
-	}
 
 	@Override
 	@Transactional
