@@ -57,7 +57,5 @@ public class UsuarioService implements UsuarioServiceInterface {
 		if (emailExiste) {
 			throw new EmailException("Já existe um usário com este e-mail.");
 		}
-		
 	}
-
 }
