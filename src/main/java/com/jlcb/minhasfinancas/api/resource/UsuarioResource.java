@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jlcb.minhasfinancas.api.dto.UsuarioDTO;
 import com.jlcb.minhasfinancas.model.Usuario;
-import com.jlcb.minhasfinancas.service.UsuarioService;
 import com.jlcb.minhasfinancas.service.exception.AutenticacaoException;
-import com.jlcb.minhasfinancas.service.exception.EmailException;
+import com.jlcb.minhasfinancas.service.exception.RegraDeNegocioException;
+import com.jlcb.minhasfinancas.service.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioResource {
 	
-	private UsuarioService usuarioService;
+	private UsuarioServiceImpl usuarioService;
 	
 	/*
 	 * Contrutor para injeção de dependência
 	 * 
 	 */
-	public UsuarioResource(UsuarioService usuarioService) {
+	public UsuarioResource(UsuarioServiceImpl usuarioService) {
 		this.usuarioService = usuarioService;
 	}
 	
@@ -42,7 +42,7 @@ public class UsuarioResource {
 			Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
 			
 			return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED); /* quando precisar retornar algo no corpo usar new ResponseEntity<>(corpo da resposta, status retornado); */
-		} catch (EmailException e) {
+		} catch (RegraDeNegocioException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

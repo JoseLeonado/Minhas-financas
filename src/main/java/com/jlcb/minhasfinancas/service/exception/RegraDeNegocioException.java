@@ -1,10 +1,10 @@
 package com.jlcb.minhasfinancas.service.exception;
 
-public class EmailException extends RuntimeException {
+public class RegraDeNegocioException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 
-	public EmailException(String msg) {
+	public RegraDeNegocioException(String msg) {
 		super(msg);
 	}
 }

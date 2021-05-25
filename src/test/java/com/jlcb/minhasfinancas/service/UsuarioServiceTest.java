@@ -14,14 +14,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.model.repository.UsuarioRepository;
 import com.jlcb.minhasfinancas.service.exception.AutenticacaoException;
-import com.jlcb.minhasfinancas.service.exception.EmailException;
+import com.jlcb.minhasfinancas.service.exception.RegraDeNegocioException;
+import com.jlcb.minhasfinancas.service.impl.UsuarioServiceImpl;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class UsuarioServiceTest {
 
 	@SpyBean
-	UsuarioService usuarioService;
+	UsuarioServiceImpl usuarioService;
 
 	@MockBean
 	UsuarioRepository usuarioRepository;
@@ -88,12 +89,12 @@ public class UsuarioServiceTest {
 	@Test
 	public void naoDeverSalvarUsuarioComUmEmailJaCadastrado() {
 		
-		org.junit.jupiter.api.Assertions.assertThrows(EmailException.class, () -> {
+		org.junit.jupiter.api.Assertions.assertThrows(RegraDeNegocioException.class, () -> {
 			/* Cenário */
 			String email = "email@email.com";
 			Usuario usuario = Usuario.builder().email(email).build();
 			
-			Mockito.doThrow(EmailException.class).when(usuarioService).validarEmail(email); /* Deveremos retornar a exceção */
+			Mockito.doThrow(RegraDeNegocioException.class).when(usuarioService).validarEmail(email); /* Deveremos retornar a exceção */
 			
 			/* Açaõ */
 			usuarioService.salvarUsuario(usuario);
@@ -138,7 +139,7 @@ public class UsuarioServiceTest {
 	@Test
 	public void deveLancarErroAoValidarEmailQuandoExistirEmailCadastrado() {
 
-		org.junit.jupiter.api.Assertions.assertThrows(EmailException.class, () -> {
+		org.junit.jupiter.api.Assertions.assertThrows(RegraDeNegocioException.class, () -> {
 
 			/* Cenário */
 			Mockito.when(usuarioRepository.existsByEmail(Mockito.anyString())).thenReturn(true);

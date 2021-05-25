@@ -9,10 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.jlcb.minhasfinancas.model.Usuario;
-import com.jlcb.minhasfinancas.model.enums.StatusLancamento;
-import com.jlcb.minhasfinancas.model.enums.TipoLancamento;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -43,10 +39,10 @@ public class LancamentoDTO {
 	private BigDecimal valor;
 
 	@NotBlank(message = "Informe o tipo do lançamento")
-	private TipoLancamento tipo;
+	private String tipo;
 
 	@NotBlank(message = "Informe o status do lançamento")
-	private StatusLancamento status;
+	private String status;
 
 	@NotBlank(message = "Infome um usuário")
 	private Long usuario;
