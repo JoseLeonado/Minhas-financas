@@ -15,5 +15,5 @@ public interface LancamentoServiceInterface {
 
 	List<Lancamento> buscar(Lancamento lancamentoFiltros);
 	
-	void atulizarStatus(Lancamento lancamento, StatusLancamento status);
+	void atulizarStatus(Lancamento lancamento, StatusLancamento status);	
 }
