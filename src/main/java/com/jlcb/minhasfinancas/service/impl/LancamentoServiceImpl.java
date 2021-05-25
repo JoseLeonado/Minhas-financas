@@ -1,5 +1,6 @@
 package com.jlcb.minhasfinancas.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.jlcb.minhasfinancas.model.Lancamento;
 import com.jlcb.minhasfinancas.model.enums.StatusLancamento;
+import com.jlcb.minhasfinancas.model.enums.TipoLancamento;
 import com.jlcb.minhasfinancas.model.repository.LancamentoRepository;
 import com.jlcb.minhasfinancas.service.LancamentoService;
 
@@ -76,5 +78,23 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Override
 	public Optional<Lancamento> obterLancamentoPorId(Long id) {
 		return lancamentoRepository.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public BigDecimal obterSaldoPorUsuario(Long id) {
+		
+		BigDecimal receitas = lancamentoRepository.obterSaldoPorTipoDeLancamentoDeUmUsuario(id, TipoLancamento.RECEITA.name());
+		BigDecimal despesas = lancamentoRepository.obterSaldoPorTipoDeLancamentoDeUmUsuario(id, TipoLancamento.DESPESA.name());
+		
+		if (receitas == null) {
+			receitas = BigDecimal.ZERO;
+		}
+		
+		if (despesas == null) {
+			despesas = BigDecimal.ZERO;
+		}
+		
+		return receitas.subtract(despesas);
 	}
 }

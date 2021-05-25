@@ -46,22 +46,22 @@ public class LancamentoResource {
 			@RequestParam("usuario") Long idUsuario
 			) {
 		
-		Lancamento lancamentoFiltros = new Lancamento();
-		lancamentoFiltros.setDescricao(descricao);
-		lancamentoFiltros.setMes(mes);
-		lancamentoFiltros.setAno(ano);
+		Lancamento lancamento = new Lancamento();
+		lancamento.setDescricao(descricao);
+		lancamento.setMes(mes);
+		lancamento.setAno(ano);
 		
 		Optional<Usuario> usuario = usuarioService.obterUsuarioPorId(idUsuario); /* Pode ou não retornar um usuário */
 		
 		if (!usuario.isPresent()) {
 			return ResponseEntity.badRequest().body("Não foi possível realizar a consulta. Usuário não encontrado para o id informado");
 		} else {
-			lancamentoFiltros.setUsuario(usuario.get());
+			lancamento.setUsuario(usuario.get());
 		}
 		
-		List<Lancamento> lancamentosEncontradoNaBuscaPelosFiltros = lancamentoService.buscar(lancamentoFiltros);
+		List<Lancamento> lancamentosEncontradosNaBuscaPelosFiltros = lancamentoService.buscar(lancamento);
 		
-		return ResponseEntity.ok(lancamentosEncontradoNaBuscaPelosFiltros);
+		return ResponseEntity.ok(lancamentosEncontradosNaBuscaPelosFiltros);
 	}
 	
 	@PostMapping
@@ -123,15 +123,7 @@ public class LancamentoResource {
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deletar (@PathVariable("id") Long id) {
 		
-		
-//		if (lancamentoEncontrado.isPresent()) {
-//			lancamentoService.deletar(lancamentoEncontrado);
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		} else {
-//			return new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST);
-//		}
-
-		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { /* Caso encontre um lançamento pelo id, então iremos deletar o mesmo */
+		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { 
 			
 			lancamentoService.deletar(lancamentoEncontrado);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

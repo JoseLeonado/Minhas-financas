@@ -1,5 +1,6 @@
 package com.jlcb.minhasfinancas.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface LancamentoService {
 	void atulizarStatus(Lancamento lancamento, StatusLancamento status);
 	
 	Optional<Lancamento> obterLancamentoPorId(Long id);
+	
+	BigDecimal obterSaldoPorUsuario(Long id);
 }
