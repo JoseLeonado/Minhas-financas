@@ -1,6 +1,7 @@
 package com.jlcb.minhasfinancas.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.transaction.Transactional;
 
@@ -28,15 +29,20 @@ public class LancamentoService implements LancamentoServiceInterface {
 	}
 
 	@Override
+	@Transactional
 	public Lancamento atualizar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Objects.requireNonNull(lancamento.getId()); /* Checando se o id não é nulo, ou seja, verificar se está sendo passado um id */
+		
+		return salvar(lancamento);
 	}
 
 	@Override
 	public void deletar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
-		
+
+		Objects.requireNonNull(lancamento.getId());
+
+		lancamentoRepository.delete(lancamento);
 	}
 
 	@Override
@@ -47,7 +53,9 @@ public class LancamentoService implements LancamentoServiceInterface {
 
 	@Override
 	public void atulizarStatus(Lancamento lancamento, StatusLancamento status) {
-		// TODO Auto-generated method stub
 		
+		lancamento.setStatus(status);
+		
+		atualizar(lancamento);
 	}
 }
