@@ -2,6 +2,8 @@ package com.jlcb.minhasfinancas.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.jlcb.minhasfinancas.model.Lancamento;
@@ -20,9 +22,9 @@ public class LancamentoService implements LancamentoServiceInterface {
 	}
 
 	@Override
+	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
-		return null;
+		return lancamentoRepository.save(lancamento);
 	}
 
 	@Override
