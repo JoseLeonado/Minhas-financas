@@ -3,8 +3,11 @@ package com.jlcb.minhasfinancas.api.resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +34,33 @@ public class LancamentoResource {
 	@PostMapping
 	public ResponseEntity<?> salvar(@Valid @RequestBody LancamentoDTO lancamentoDTO) {
 		
+		try {
+			
+			Lancamento lancamento = converterDtoParaLancamento(lancamentoDTO);
+			lancamentoService.salvar(lancamento);
+			
+			return new ResponseEntity<>(lancamento, HttpStatus.CREATED);
+		} catch (RegraDeNegocioException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PutMapping("{id}") /* Editar */
+	public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @Valid @RequestBody LancamentoDTO lancamentoDTO) {
 		
-		
+		return	lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> {
+			
+			try {
+				
+				Lancamento lancamento =	converterDtoParaLancamento(lancamentoDTO);
+				lancamento.setId(lancamentoEncontrado.getId());
+				lancamentoService.atualizar(lancamento);
+				
+				return ResponseEntity.ok(lancamento);
+			} catch (RegraDeNegocioException e) {
+				return ResponseEntity.badRequest().body(e.getMessage());
+			}
+		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST)); /* Caso não encontre o lançamento pelo id passado */
 	}
 	
 	private Lancamento converterDtoParaLancamento(LancamentoDTO lancamentoDTO) {

@@ -2,6 +2,7 @@ package com.jlcb.minhasfinancas.service.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -73,5 +74,10 @@ public class LancamentoServiceImpl implements LancamentoService {
 		lancamento.setStatus(status);
 		
 		atualizar(lancamento);
+	}
+
+	@Override
+	public Optional<Lancamento> obterLancamentoPorId(Long id) {
+		return lancamentoRepository.findById(id);
 	}
 }

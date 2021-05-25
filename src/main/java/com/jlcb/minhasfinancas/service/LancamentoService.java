@@ -1,6 +1,7 @@
 package com.jlcb.minhasfinancas.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.jlcb.minhasfinancas.model.Lancamento;
 import com.jlcb.minhasfinancas.model.enums.StatusLancamento;
@@ -16,4 +17,6 @@ public interface LancamentoService {
 	List<Lancamento> buscar(Lancamento lancamentoFiltros);
 	
 	void atulizarStatus(Lancamento lancamento, StatusLancamento status);
+	
+	Optional<Lancamento> obterLancamentoPorId(Long id);
 }
