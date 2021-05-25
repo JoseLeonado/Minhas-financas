@@ -11,10 +11,10 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.jlcb.minhasfinancas.exception.AutenticacaoException;
-import com.jlcb.minhasfinancas.exception.EmailException;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.model.repository.UsuarioRepository;
+import com.jlcb.minhasfinancas.service.exception.AutenticacaoException;
+import com.jlcb.minhasfinancas.service.exception.EmailException;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")

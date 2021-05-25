@@ -1,5 +1,7 @@
 package com.jlcb.minhasfinancas.api.resource;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,12 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jlcb.minhasfinancas.api.dto.AutenticacaoUsuarioDTO;
-import com.jlcb.minhasfinancas.api.dto.CadastroUsuarioDTO;
-import com.jlcb.minhasfinancas.exception.AutenticacaoException;
-import com.jlcb.minhasfinancas.exception.EmailException;
+import com.jlcb.minhasfinancas.api.dto.UsuarioDTO;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.service.UsuarioService;
+import com.jlcb.minhasfinancas.service.exception.AutenticacaoException;
+import com.jlcb.minhasfinancas.service.exception.EmailException;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -32,9 +33,9 @@ public class UsuarioResource {
 	 * @RequestBody = Ela diz para que o JSON que vem da requisição sejam transformado no objeto DTO com as propriedades da mesma
 	 */
 	@PostMapping
-	public ResponseEntity<?> salvar(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO) { 
+	public ResponseEntity<?> salvar(@Valid @RequestBody UsuarioDTO usuarioDTO) { 
 		
-		Usuario usuario = new Usuario(null, cadastroUsuarioDTO.getNome(), cadastroUsuarioDTO.getEmail(), cadastroUsuarioDTO.getSenha());
+		Usuario usuario = new Usuario(null, usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getSenha());
 		
 		try {
 			
@@ -47,11 +48,11 @@ public class UsuarioResource {
 	}
 	
 	@PostMapping("/autenticar")
-	public ResponseEntity<?> autenticar(@RequestBody AutenticacaoUsuarioDTO autenticacaoUsuarioDTO) {
+	public ResponseEntity<?> autenticar(@RequestBody UsuarioDTO usuarioDTO) {
 		
 		try {
 			
-			Usuario usuarioAutenticado = usuarioService.autenticar(autenticacaoUsuarioDTO.getEmail(), autenticacaoUsuarioDTO.getSenha());
+			Usuario usuarioAutenticado = usuarioService.autenticar(usuarioDTO.getEmail(), usuarioDTO.getSenha());
 			
 			return ResponseEntity.ok(usuarioAutenticado); /* Retorna o status 200 */
 		} catch (AutenticacaoException e) {

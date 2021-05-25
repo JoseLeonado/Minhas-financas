@@ -1,4 +1,4 @@
-package com.jlcb.minhasfinancas.exception;
+package com.jlcb.minhasfinancas.service.exception;
 
 public class EmailException extends RuntimeException {
 	

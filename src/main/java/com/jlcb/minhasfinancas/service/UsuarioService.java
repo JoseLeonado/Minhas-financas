@@ -7,10 +7,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlcb.minhasfinancas.exception.AutenticacaoException;
-import com.jlcb.minhasfinancas.exception.EmailException;
 import com.jlcb.minhasfinancas.model.Usuario;
 import com.jlcb.minhasfinancas.model.repository.UsuarioRepository;
+import com.jlcb.minhasfinancas.service.exception.AutenticacaoException;
+import com.jlcb.minhasfinancas.service.exception.EmailException;
 import com.jlcb.minhasfinancas.service.interfaces.UsuarioServiceInterface;
 
 @Service

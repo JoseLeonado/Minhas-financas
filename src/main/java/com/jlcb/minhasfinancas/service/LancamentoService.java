@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -27,13 +28,13 @@ public class LancamentoService implements LancamentoServiceInterface {
 
 	@Override
 	@Transactional
-	public Lancamento salvar(Lancamento lancamento) {
+	public Lancamento salvar(@Valid Lancamento lancamento) {
 		return lancamentoRepository.save(lancamento);
 	}
 
 	@Override
 	@Transactional
-	public Lancamento atualizar(Lancamento lancamento) {
+	public Lancamento atualizar(@Valid Lancamento lancamento) {
 		
 		Objects.requireNonNull(lancamento.getId()); /* Checando se o id não é nulo, ou seja, verificar se está sendo passado um id */
 		
