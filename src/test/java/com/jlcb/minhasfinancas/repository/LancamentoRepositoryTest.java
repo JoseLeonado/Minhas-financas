@@ -2,8 +2,9 @@ package com.jlcb.minhasfinancas.repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,13 @@ public class LancamentoRepositoryTest {
 		Lancamento lancamento = criarLancamento();
 		lancamento = lancamentoRepository.save(lancamento);
 		
-		Assertions.assertThat(lancamento.getId()).isNotNull();
+		assertThat(lancamento.getId()).isNotNull();
 	}
 	
 	@Test
 	public void deveDeletarUmLancamento() {
 		
-		Lancamento lancamento = criarLancamento();
-		entityManager.persist(lancamento);
+		Lancamento lancamento = criarEPersistirUmLancamento();
 		
 		lancamento = entityManager.find(Lancamento.class, lancamento.getId());
 		
@@ -52,10 +52,45 @@ public class LancamentoRepositoryTest {
 		
 		Lancamento lancamentoInexistente = entityManager.find(Lancamento.class, lancamento.getId());
 		
-		Assertions.assertThat(lancamentoInexistente).isNull();
+		assertThat(lancamentoInexistente).isNull();
 	}
 	
-	private static Lancamento criarLancamento() {
+	@Test
+	public void deveAtualizarUmLancamento() {
+		
+		Lancamento lancamento = criarEPersistirUmLancamento();
+		lancamento.setMes(12);
+		lancamento.setAno(2018);
+		lancamento.setStatus(StatusLancamento.CANCELADO);
+		
+		lancamentoRepository.save(lancamento);
+		
+		Lancamento lancamentoAtualizado = entityManager.find(Lancamento.class, lancamento.getId());
+		
+		assertThat(lancamentoAtualizado.getMes()).isEqualTo(12);
+		assertThat(lancamentoAtualizado.getAno()).isEqualTo(2018);
+		assertThat(lancamentoAtualizado.getStatus()).isEqualTo(StatusLancamento.CANCELADO);
+	}
+	
+	@Test
+	public void deveBuscarUmLancamentoPorId() {
+		
+		Lancamento lancamento = criarEPersistirUmLancamento();
+
+		Optional<Lancamento> lancamentoEncontrado = lancamentoRepository.findById(lancamento.getId());
+		
+		assertThat(lancamentoEncontrado.isPresent()).isTrue();
+	}
+	
+	private Lancamento criarLancamento() {
 		return new Lancamento(null, "Lançamento qualquer", 4, 2021, BigDecimal.valueOf(100), TipoLancamento.RECEITA, StatusLancamento.PENDENTE, null, LocalDate.now());
+	}
+	
+	private Lancamento criarEPersistirUmLancamento() {
+		
+		Lancamento lancamento = criarLancamento();
+		entityManager.persist(lancamento);
+		
+		return lancamento;
 	}
 }
