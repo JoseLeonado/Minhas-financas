@@ -82,7 +82,7 @@ public class LancamentoRepositoryTest {
 		assertThat(lancamentoEncontrado.isPresent()).isTrue();
 	}
 	
-	private Lancamento criarLancamento() {
+	public static Lancamento criarLancamento() {
 		return new Lancamento(null, "Lançamento qualquer", 4, 2021, BigDecimal.valueOf(100), TipoLancamento.RECEITA, StatusLancamento.PENDENTE, null, LocalDate.now());
 	}
 	
