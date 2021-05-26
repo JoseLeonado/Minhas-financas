@@ -41,7 +41,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 		
 		Objects.requireNonNull(lancamento.getId()); /* Checando se o id não é nulo, ou seja, verificar se está sendo passado um id */
 		
-		return salvar(lancamento);
+		return lancamentoRepository.save(lancamento);
 	}
 
 	@Override
@@ -84,8 +84,8 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Transactional
 	public BigDecimal obterSaldoPorUsuario(Long id) {
 		
-		BigDecimal receitas = lancamentoRepository.obterSaldoPorTipoDeLancamentoDeUmUsuario(id, TipoLancamento.RECEITA.name());
-		BigDecimal despesas = lancamentoRepository.obterSaldoPorTipoDeLancamentoDeUmUsuario(id, TipoLancamento.DESPESA.name());
+		BigDecimal receitas = lancamentoRepository.obterSaldoPorTipoDeLancamentoDeUmUsuario(id, TipoLancamento.RECEITA);
+		BigDecimal despesas = lancamentoRepository.obterSaldoPorTipoDeLancamentoDeUmUsuario(id, TipoLancamento.DESPESA);
 		
 		if (receitas == null) {
 			receitas = BigDecimal.ZERO;

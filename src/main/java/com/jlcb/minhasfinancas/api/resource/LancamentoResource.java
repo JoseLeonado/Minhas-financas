@@ -81,7 +81,7 @@ public class LancamentoResource {
 	@PutMapping("{id}") /* Editar */
 	public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @Valid @RequestBody LancamentoDTO lancamentoDTO) {
 		
-		return	lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { /* Caso encontre um lançamento pelo id, então iremos atualiza o mesmo */
+		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> { /* Caso encontre um lançamento pelo id, então iremos atualiza o mesmo */
 			
 			try {
 				
@@ -96,7 +96,7 @@ public class LancamentoResource {
 		}).orElseGet(() -> new ResponseEntity<>("Lançamento não encontrado.", HttpStatus.BAD_REQUEST)); /* Lançar uma exceção caso não encontre o lançamento pelo id passado */
 	}
 	
-	@PutMapping("{id}/atuliza-status")
+	@PutMapping("{id}/atualiza-status")
 	public ResponseEntity<?> atualizarStatus(@PathVariable("id") Long id, @RequestBody AtualizaStatusLancamentoDTO atualizaStatusLancamentoDTO) {
 		
 		return lancamentoService.obterLancamentoPorId(id).map(lancamentoEncontrado -> {
